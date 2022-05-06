@@ -3,7 +3,6 @@ using BancoMaster.Domain.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BancoMaster.API.Controllers
@@ -22,19 +21,19 @@ namespace BancoMaster.API.Controllers
         }
 
         /// <summary>
-        /// Carrega rotas especificas a partir da Origem e Destino
+        /// Carrega rotas especificas a partir da abreviatura de origem e destino
         /// </summary>
-        /// <param name="origin"></param>
-        /// <param name="destiny"></param>
+        /// <param name="originAbbr"></param>
+        /// <param name="destinyAbbr"></param>
         /// <returns></returns>
-        [HttpGet("{origin}/{destiny}")]
+        [HttpGet("{originAbbr}/{destinyAbbr}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Get(string origin, string destiny)
+        public async Task<IActionResult> Get(string originAbbr, string destinyAbbr)
         {
             try
             {
-                return Ok(await RoutesRepo.ListingValues(origin, destiny));
+                return Ok(await RoutesRepo.ListingValues(originAbbr, destinyAbbr));
             }
             catch (System.Exception ex)
             {
@@ -43,19 +42,19 @@ namespace BancoMaster.API.Controllers
         }
 
         /// <summary>
-        /// Carrega a rota com o melhor preço
+        /// Carrega a rota com o melhor preço e busca por abreviatura de origem e destino
         /// </summary>
-        /// <param name="origin"></param>
-        /// <param name="destiny"></param>
+        /// <param name="originAbbr"></param>
+        /// <param name="destinyAbbr"></param>
         /// <returns></returns>
-        [HttpGet("best-price/{origin}/{destiny}")]
+        [HttpGet("best-price/{originAbbr}/{destinyAbbr}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> BestPrice(string origin, string destiny)
+        public async Task<IActionResult> BestPrice(string originAbbr, string destinyAbbr)
         {
             try
             {
-                var result = await RoutesRepo.BestPrice(origin, destiny);
+                var result = await RoutesRepo.BestPrice(originAbbr, destinyAbbr);
                 var st = "";
                 var connections = ""; 
                 if (result.Id != 0)
